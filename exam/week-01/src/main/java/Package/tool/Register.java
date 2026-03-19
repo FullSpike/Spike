@@ -37,7 +37,7 @@ public class Register {
         if(role==1){
             System.out.println("请输入学号（前缀3125或3225，共10位数字）：");
             String number=sc.next();
-            while(!number.startsWith("3125")&&!number.startsWith("3225")&&!number.matches("\\d{10}")||um.selectStudentByNumber(number)!=0){
+            while(!number.startsWith("3125")&&!number.startsWith("3225")||!number.matches("\\d{10}")||um.selectStudentByNumber(number)!=0){
                 System.out.println("请输入正确的学号格式或该学号已被注册");
                 System.out.println("请重新输入:");
                 number=sc.next();//重新获取用户输入的学号
@@ -61,7 +61,7 @@ public class Register {
         }else{
             System.out.println("请输入维修人员学号（前缀为0025，共10位数字）：");
             String number=sc.next();
-            while(!number.startsWith("0025")&&!number.matches("\\d{10}")||
+            while(!number.startsWith("0025")||!number.matches("\\d{10}")||
                     um.selectAdminByNumber(number)!=0){
                 System.out.println("请输入正确的学号格式或该学号已被注册");
                 System.out.println("请重新输入:");
