@@ -100,6 +100,8 @@ public class fixOrderServiceImpl implements fixOrderService {
         } else {
             for (Order order : orders) {
                 System.out.println("报修单号："+order.getId());
+                System.out.println("报修人学号："+order.getNumber());
+                System.out.println("报修宿舍："+order.getRoom());
                 System.out.println("报修详情："+order.getDetail());
                 System.out.println("报修状态："+order.getStatus());
                 System.out.println("评价："+order.getEvaluation());
@@ -118,6 +120,8 @@ public class fixOrderServiceImpl implements fixOrderService {
         } else {
             for (Order order : orders) {
                 System.out.println("报修单号："+order.getId());
+                System.out.println("报修人学号："+order.getNumber());
+                System.out.println("报修宿舍："+order.getRoom());
                 System.out.println("报修详情："+order.getDetail());
                 System.out.println("报修状态："+order.getStatus());
                 System.out.println("评价："+order.getEvaluation());
@@ -136,6 +140,8 @@ public class fixOrderServiceImpl implements fixOrderService {
         } else {
             for (Order order : orders) {
                 System.out.println("报修单号："+order.getId());
+                System.out.println("报修人学号："+order.getNumber());
+                System.out.println("报修宿舍："+order.getRoom());
                 System.out.println("报修详情："+order.getDetail());
                 System.out.println("报修状态："+order.getStatus());
                 System.out.println("评价："+order.getEvaluation());
