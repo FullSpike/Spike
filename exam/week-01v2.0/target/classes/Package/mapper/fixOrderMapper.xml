@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Package.mapper.fixOrderMapper">
+
+
+    <!-- 添加订单 -->
+    <insert id="addOrder">
+        insert into order0(detail, status, f_id, room, number, last_time)
+        values (#{detail}, #{status}, #{f_id}, #{room}, #{number}, #{lastTime})
+    </insert>
+    <update id="updateEvaluation">
+        update order0 set evaluation=#{evaluation} where id=#{id}
+    </update>
+    <!-- 删除订单 -->
+    <delete id="delOrder">
+        delete from order0 where id=#{id}
+    </delete>
+    <!-- 查询订单 -->
+    <select id="selectOrderByF_id" resultType="Package.pojo.Order">
+        select * from order0 where f_id=#{f_id}
+    </select>
+    <!-- 查询所有订单 -->
+    <select id="selectAllOrders" resultType="Package.pojo.Order">
+        select id, detail, status, f_id, room, number, last_time, evaluation from order0
+    </select>
+    <!-- 查询已处理订单 -->
+    <select id="selectProcessedOrders" resultType="Package.pojo.Order">
+        select id, detail, status, f_id, room, number, last_time, evaluation from order0 where status='已处理'
+    </select>
+    <!-- 查询未处理订单 -->
+    <select id="selectUnprocessedOrders" resultType="Package.pojo.Order">
+        select id, detail, status, f_id, room, number, last_time, evaluation from order0 where status='未处理'
+    </select>
+    <select id="selectOrderById" resultType="java.lang.Boolean">
+        select count(*)>0 from order0 where id=#{id}
+    </select>
+
+</mapper>
