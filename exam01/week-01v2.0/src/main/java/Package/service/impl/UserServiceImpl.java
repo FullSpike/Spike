@@ -57,28 +57,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setStudentPassword(String number) {
         System.out.println("请输入您的新密码：");
-        String newPassword = sc.next();
-        um.updatePassword(number,newPassword);
+        System.out.println("请输入密码（至少一个数字和一个字母，长度不小于6位）：");
+        String password=sc.next();
+        while(!password.matches("^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$")){
+            System.out.println("格式错误，请输入至少一个数字和一个字母，长度不小于6位的密码");
+            password=sc.next();//重新获取用户输入的密码
+        }
+        System.out.println("请确认密码：");
+        String confirmPassword=sc.next();
+        while(!confirmPassword.equals(password)){
+            System.out.println("两次密码不一致");
+            System.out.println("请确认密码：");
+            confirmPassword=sc.next();//重新获取用户输入的确认密码
+        }
+        um.updatePassword(number,password);
         System.out.println("修改密码成功！");
     }
 
     @Override
     public void setAdminPassword(String number) {
-        Scanner sc=new Scanner(System.in);
-        System.out.println("请输入新密码：");
-        String password=sc.next();
-        System.out.println("请重新输入确认密码：");
-        String confirmPassword=sc.next();
-        while (!confirmPassword.equals(password)) {
-            System.out.println("两次密码输入不一致！请重新输入");
-            System.out.println("请输入新密码：");
-            password=sc.next();
-            System.out.println("请重新输入确认密码：");
-            confirmPassword=sc.next();
+        System.out.println("请输入您的新密码：");
+        System.out.println("请输入密码（至少一个数字和一个字母，长度不小于6位）：");
+        String adminPassword=sc.next();
+        while(!adminPassword.matches("^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$")){
+            System.out.println("格式错误，请输入至少一个数字和一个字母，长度不小于6位的密码");
+            adminPassword=sc.next();//重新获取用户输入的密码
         }
-        um.updateAdminPassword(number,password);
-        sqls.commit();
-        System.out.println("密码更新成功！");
+        System.out.println("请确认密码：");
+        String adminConfirmPassword=sc.next();
+        while(!adminConfirmPassword.equals(adminPassword)){
+            System.out.println("两次密码不一致");
+            System.out.println("请确认密码：");
+            //重新获取用户输入的确认密码
+            adminConfirmPassword=sc.next();
+        }
+        um.updateAdminPassword(number,adminPassword);
+        System.out.println("修改密码成功！");
     }
 
     @Override
