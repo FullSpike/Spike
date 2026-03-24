@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.week02.mapper.adminMapper">
+
+<!--    插入管理员 -->
+    <insert id="insertAdmin">
+        insert into admin(number,password) values(#{number},#{password})
+    </insert>
+<!--    更新管理员密码 -->
+    <update id="updatePassword">
+        update admin set password = #{password} where id = #{id}
+    </update>
+
+    <!--    根据工号查询管理员 -->
+    <select id="findAdminByNumber" resultType="org.example.week02.pojo.Admin">
+        select * from admin where number = #{number}
+    </select>
+<!--    根据id查询管理员 -->
+    <select id="findAdminById" resultType="org.example.week02.pojo.Admin">
+        select * from admin where id = #{id}
+    </select>
+</mapper>

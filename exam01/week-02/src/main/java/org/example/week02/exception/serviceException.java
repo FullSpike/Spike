@@ -3,7 +3,13 @@ package org.example.week02.exception;
 
 
 public class serviceException extends RuntimeException {
-    public serviceException(String message) {
+
+    private String code;
+    public serviceException(String message,String code) {
         super(message);
+        this.code = code;
+    }
+    public String getCode() {
+        return code;
     }
 }

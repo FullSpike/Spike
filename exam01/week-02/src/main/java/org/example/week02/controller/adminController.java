@@ -4,60 +4,55 @@ package org.example.week02.controller;
 import jakarta.validation.constraints.Pattern;
 import org.example.week02.common.Result;
 import org.example.week02.pojo.Order;
+import org.example.week02.service.adminService;
 import org.example.week02.service.fixOrderService;
 import org.example.week02.service.studentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/admins")
 @Validated
-public class userController {
-
-    @Autowired
-    private studentService studentService;
+public class adminController {
 
     @Autowired
     private fixOrderService fixOrderService;
 
+    @Autowired
+    private adminService adminService;
+
+
     @PostMapping()
-    public Result<String> register(@Pattern(regexp = "^3(125|225)\\d{6}$") String number,
+    public Result<String> register(@Pattern(regexp = "^0025\\d{6}$") String number,
                                    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$") String password){
-        studentService.registerStudent(number,password);
+        adminService.registerAdmin(number,password);
         return Result.success("register success");
     }
 
-    @PutMapping("/{id}/room")
-    public Result<String> updateRoom(@PathVariable long id,
-                                 @RequestBody @Validated String room){
-        studentService.loginRoom(id,room);
-        return Result.success("login success");
+    @GetMapping("/allorder")
+    public Result<List<Order>> getAllOrder(){
+        return Result.success(fixOrderService.getAllOrder());
+    }
+    @GetMapping("/processorder")
+    public Result<List<Order>> getProcessOrder(){
+        return Result.success(fixOrderService.getProcessOrder());
+    }
+    @GetMapping("/unprocessorder")
+    public Result<List<Order>> getUnProcessOrder(){
+        return Result.success(fixOrderService.getUnProcessOrder());
     }
 
+    /*
+    * 修改密码
+    * */
     @PutMapping("/{id}/password")
     public Result<String> updatePassword(@PathVariable long id,
                                          @Pattern(regexp = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$") String password){
-        studentService.updatePassword(id,password);
+        adminService.updatePassword(id,password);
         return Result.success("update success");
-    }
-
-    @PostMapping("/{id}/order")
-    public Result<String> addOrder(@PathVariable long id,
-                                   @RequestParam("details") String details,
-                                   @RequestParam("file") MultipartFile file){
-        studentService.addOrder(id,details,file);
-        return Result.success("add success");
-    }
-
-    @GetMapping("/{id}/order")
-    public Result<java.util.List<Order>> getOrder(@PathVariable long id){
-        List<Order> o= fixOrderService.selectOrders(id);
-        return Result.success(o);
     }
 
     @DeleteMapping("/{id}/order/{o_id}")
@@ -66,4 +61,15 @@ public class userController {
         fixOrderService.deleteOrder(o_id);
         return Result.success("delete success");
     }
+
+    @PutMapping("/{id}/order/{o_id}")
+    public Result<String> updateOrder(@PathVariable long id,
+                                     @PathVariable long o_id,
+                                     @RequestParam("status") String status){
+        fixOrderService.updateOrder(o_id,status);
+        return Result.success("update success");
+    }
+
+
+
 }

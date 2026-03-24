@@ -8,8 +8,27 @@
     <insert id="insertStudent">
         insert into student (number, password) values (#{number}, #{password})
     </insert>
-<!-- 根据学号查询学生 -->
+<!-- 插入报修订单 -->
+    <insert id="addOrder">
+        insert into order0 (detail, status, f_id, room, number, last_time, path_name)
+        values (#{detail}, #{status}, #{f_id}, #{room}, #{number}, #{last_time}, #{path_name})
+    </insert>
+    <!-- 更新学生房间 -->
+    <update id="updateRoom">
+        update student set room = #{room} where id = #{id}
+</update>
+    <!-- 根据学号查询学生 -->
     <select id="findStudentByNumber" resultType="org.example.week02.pojo.Student">
             select * from student where number = #{number}
         </select>
-       </mapper>
+    <!-- 根据id查询学生 -->
+    <select id="findStudentById" resultType="org.example.week02.pojo.Student">
+            select * from student where id = #{id}
+    </select>
+    <!-- 更新学生密码 -->
+    <update id="updatePassword">
+        update student set password = #{password} where id = #{id}
+    </update>
+
+
+</mapper>

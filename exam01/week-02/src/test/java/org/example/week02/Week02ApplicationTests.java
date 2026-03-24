@@ -1,6 +1,7 @@
 package org.example.week02;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

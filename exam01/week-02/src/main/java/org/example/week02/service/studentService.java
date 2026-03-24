@@ -2,11 +2,20 @@ package org.example.week02.service;
 
 
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
+import org.example.week02.pojo.Order;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface studentService {
 
 
-    void  registerStudent(@Pattern(regexp = "^3(125|225)\\d{6}$") String number, @Pattern(regexp = "^(?=.*\\d)(?=.*[a-zA-Z]).{6,}$") String password);
+    void  registerStudent( String number,String password);
+
+    void loginRoom(long id, String room);
+
+    void updatePassword(long id, String password);
+
+    void addOrder(long id, String details, MultipartFile file);
+
 }
