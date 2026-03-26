@@ -4,6 +4,7 @@ public class Student {
     private String number;
     private String room;
     private String password;
+    private String token;
 
     public String getNumber() {
         return number;
@@ -29,6 +30,13 @@ public class Student {
         this.password = password;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     @Override
     public String toString() {
@@ -36,6 +44,7 @@ public class Student {
                 "number='" + number + '\'' +
                 ", room='" + room + '\'' +
                 ", password='" + password + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

@@ -34,9 +34,9 @@ public class userController {
 
     @PutMapping("/{id}/room")
     public Result<String> updateRoom(@PathVariable long id,
-                                 @RequestBody @Validated String room){
+                                     @RequestParam("room") String room){
         studentService.loginRoom(id,room);
-        return Result.success("login success");
+        return Result.success("update success");
     }
 
     @PutMapping("/{id}/password")
@@ -55,7 +55,7 @@ public class userController {
     }
 
     @GetMapping("/{id}/order")
-    public Result<java.util.List<Order>> getOrder(@PathVariable long id){
+    public Result<List<Order>> getOrder(@PathVariable long id){
         List<Order> o= fixOrderService.selectOrders(id);
         return Result.success(o);
     }
