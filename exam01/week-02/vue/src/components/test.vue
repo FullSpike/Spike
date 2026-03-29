@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
 

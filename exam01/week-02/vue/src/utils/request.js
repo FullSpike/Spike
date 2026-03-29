@@ -27,6 +27,7 @@ request.interceptors.response.use(function (response) {
     }
     return res
 }, error => {
+    router.push('/login')
     return Promise.reject(error)
 })
 
