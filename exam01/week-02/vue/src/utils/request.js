@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from "@/router/index.js";
 
 const request = axios.create({
     baseURL: 'http://localhost:8081',

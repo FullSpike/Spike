@@ -13,10 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/students")
 @Validated
+
 public class userController {
 
     @Autowired
@@ -48,9 +49,9 @@ public class userController {
 
     @PostMapping("/{id}/order")
     public Result<String> addOrder(@PathVariable long id,
-                                   @RequestParam("details") String details,
+                                   @RequestParam("detail") String detail,
                                    @RequestParam("file") MultipartFile file){
-        studentService.addOrder(id,details,file);
+        studentService.addOrder(id,detail,file);
         return Result.success("add success");
     }
 

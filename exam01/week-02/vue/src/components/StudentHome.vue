@@ -46,12 +46,23 @@
           <div class="form-row">
             <label>故障描述：</label>
             <textarea v-model="repairData.desc" rows="4" placeholder="请描述故障情况"></textarea>
-          </div>
-          <div class="form-row">
-            <label>联系电话：</label>
-            <input type="text" v-model="repairData.phone" placeholder="请输入电话">
-          </div>
-          <button class="btn-submit">提交报修</button>
+            <label>图片详情：</label>
+
+            </div>
+<!--            <input type="file" id="imageInput" v-onchange="repairData.img"
+                         accept="image/*">
+            <label for="imageInput" class="upload-area">
+              <div class="placeholder">
+                <p>点击或拖拽上传图片</p>
+              </div>
+              <img id="preview" hidden alt="预览图片">
+
+            </label>-->
+            <label>图片：</label>
+            <input type="file" @change="handleFileChange" accept="image/*" />
+<!--            <img v-if="previewUrl" :src="previewUrl" class="preview" />-->
+
+          <button class="btn-submit" @click="handleRepair">提交报修</button>
         </div>
 
         <!-- 3. 查看记录 -->
@@ -69,12 +80,12 @@
             <tbody>
             <tr v-for="item in recordList" :key="item.id">
               <td>{{ item.id }}</td>
-              <td>{{ item.type }}</td>
-              <td>{{ item.desc }}</td>
+              <td>{{ item.evaluation }}</td>
+              <td>{{ item.detail }}</td>
               <td>
                 <span :class="'status-' + item.status">{{ getStatus(item.status) }}</span>
               </td>
-              <td>{{ item.time }}</td>
+              <td>{{ item.last_time }}</td>
             </tr>
             </tbody>
           </table>
@@ -87,23 +98,15 @@
             <select v-model="cancelData.id">
               <option value="">请选择</option>
               <option v-for="item in pendingList" :key="item.id" :value="item.id">
-                {{ item.id }} - {{ item.type }}
+                {{ item.id }}
               </option>
             </select>
           </div>
-          <div class="form-row">
-            <label>取消原因：</label>
-            <textarea v-model="cancelData.reason" rows="3" placeholder="请输入取消原因"></textarea>
-          </div>
-          <button class="btn-submit btn-danger">确认取消</button>
+          <button class="btn-submit btn-danger" @click="handleCancel">确认取消</button>
         </div>
 
         <!-- 5. 修改密码 -->
         <div v-if="currentMenu === 'password'">
-          <div class="form-row">
-            <label>原密码：</label>
-            <input type="password" v-model="pwdData.old" placeholder="请输入原密码">
-          </div>
           <div class="form-row">
             <label>新密码：</label>
             <input type="password" v-model="pwdData.new" placeholder="请输入新密码">
@@ -112,7 +115,7 @@
             <label>确认密码：</label>
             <input type="password" v-model="pwdData.confirm" placeholder="请再次输入">
           </div>
-          <button class="btn-submit">确认修改</button>
+          <button class="btn-submit" @click="handlePasswordChange">确认修改</button>
         </div>
 
         <!-- 6. 退出登录 -->
@@ -120,8 +123,7 @@
           <div class="logout-icon">🚪</div>
           <h3>确定要退出登录吗？</h3>
           <div class="logout-btns">
-            <button class="btn-cancel">取消</button>
-            <button class="btn-confirm">确认退出</button>
+            <button class="btn-confirm" @click="handleLogout">确认退出</button>
           </div>
         </div>
       </div>
@@ -131,8 +133,9 @@
 
 <script>
 import { ElMessage } from 'element-plus'
-import axios from "axios";
-import request from '@/utils/request'
+import axios, {Cancel} from "axios";
+import request from "@/utils/request.js";
+import router from "@/router/index.js";
 
 export default {
   name: 'StudentHome',
@@ -148,30 +151,59 @@ export default {
         { id: 'logout', name: '退出登录', icon: '🚪', desc: '退出当前账号' }
       ],
       room: '',
-      currentRoom: '',
-      repairData: { type: '', desc: '', phone: '' },
-      cancelData: { id: '', reason: '' },
-      pwdData: { old: '', new: '', confirm: '' },
+      currentRoom: JSON.parse(localStorage.getItem('user') || '{}').room || '',
+      repairData: { desc: '', img: null},
+      cancelData: { id: ''},
+      pwdData: { new: '', confirm: '' },
       recordList: [
-        { id: 'R001', type: '电路维修', desc: '灯不亮了', status: 'pending', time: '2024-01-15' },
-        { id: 'R002', type: '水管维修', desc: '水龙头漏水', status: 'processing', time: '2024-01-14' }
-      ]
+        { id: '', evaluation: '', detail: '', status: '', last_time: '',path_name:''}
+      ],
+      //图片上传预览
+      previewUrl: ''
     }
+  },
+
+  /*"detail": "阿姨宿舍停电辣",
+            "evaluation": null,
+            "f_id": 3,
+            "id": 10,
+            "last_time": "2026-03-21T00:50:10",
+            "number": "3125000000",
+            "pathname": null,
+            "room": "744",
+            "status": "已处理"*/
+  mounted() {
+    let user=JSON.parse(localStorage.getItem('user') || '{}')
+    request.get('/students/'+user.id+'/order').then((res) => {
+      this.recordList = res.data || []
+    })
   },
   computed: {
     getCurrentMenu() {
       return this.menuList.find(m => m.id === this.currentMenu) || this.menuList[0]
     },
     pendingList() {
-      return this.recordList.filter(r => r.status === 'pending')
+      return this.recordList
     }
   },
   methods: {
+    handleFileChange(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.repairData.img = file
+        // 预览图片
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          this.previewUrl = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    },
     getStatus(status) {
       const map = { pending: '待处理', processing: '处理中', completed: '已完成' }
       return map[status] || status
     },
-
+    /*绑定修改宿舍*/
     async handleBind() {
       let user=JSON.parse(localStorage.getItem('user') || '{}')
       if (!this.room) {
@@ -181,15 +213,109 @@ export default {
       const params = new URLSearchParams()
       params.append('room', this.room)
       try {
-          request.put('/students/'+user.id+'/room', params).then(res => {
-          if (res.code === '200') {
+        const response = await axios.put('http://localhost:8081/students/'+user.id+'/room', params, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization':localStorage.getItem('token')
+          }
+        })
+
+          if (response.data.code === '200') {
             ElMessage.success('绑定成功！')
             this.currentRoom = this.room
           } else {
-            ElMessage.error(res.msg || '绑定失败')
+            ElMessage.error(response.data.msg || '绑定失败')
+          }
+
+      } catch (error) {
+        ElMessage.error('网络错误，请稍后重试')
+      }
+    },
+
+    /*创建报修单*/
+    async handleRepair() {
+      let user=JSON.parse(localStorage.getItem('user') || '{}')
+      if (!this.repairData.desc) {
+        ElMessage.error('请输入报修描述')
+        return
+      }
+/*      const params = new URLSearchParams()
+      params.append('detail', this.repairData.desc)
+      params.append('file', this.repairData.img)*/
+      const formData = new FormData()
+      formData.append('file', this.repairData.img)
+      formData.append('detail', this.repairData.desc)
+
+      try {
+        const response = await request.post('students/'+user.id+'/order', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        if (response.code === '200') {
+          ElMessage.success('报修成功！')
+          // 刷新列表(有bug，出现保修成功和网络异常)
+          this.$refs.repairForm.resetFields()
+        } else {
+          ElMessage.error(response.msg || '报修失败')
+        }
+
+      } catch (error) {
+      }
+    },
+
+    /*修改密码*/
+    async handlePasswordChange() {
+      let user=JSON.parse(localStorage.getItem('user') || '{}')
+        if(!this.pwdData.new || !this.pwdData.confirm) {
+          ElMessage.error('请输入新密码和确认密码')
+          return
+        }
+        if(this.pwdData.confirm !== this.pwdData.new) {
+          ElMessage.error('两次输入密码不一致')
+          return
+        }
+        const params = new URLSearchParams()
+        params.append('password', this.pwdData.new)
+      try {
+        request.put('students/' + user.id + '/password', params).then((response) => {
+          if (response.code === '200') {
+            ElMessage.success('密码修改成功！')
+          } else {
+            ElMessage.error(response.msg || '密码修改失败')
           }
         })
       } catch (error) {
+          ElMessage.error('网络错误，请稍后重试')
+      }
+    },
+
+    /*退出登录*/
+    async handleLogout() {
+      router.push('/login')
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+    },
+
+    /*
+    * 取消报修单
+    * */
+    async handleCancel() {
+      let user=JSON.parse(localStorage.getItem('user') || '{}')
+      if (!this.cancelData.id) {
+        ElMessage.error('请选择要取消的报修单')
+      }
+      try {
+        request.delete('/students/' + user.id +'/order/'+this.cancelData.id).then((response) => {
+          if (response.code === '200') {
+            ElMessage.success('取消成功！')
+            // 刷新列表(不知道能不能)
+            this.recordList = this.recordList.filter(m => m.id !== this.cancelData.id)
+          }else {
+            ElMessage.error(response.msg || '取消失败')
+          }
+        })
+      }catch(error) {
         ElMessage.error('网络错误，请稍后重试')
       }
     }

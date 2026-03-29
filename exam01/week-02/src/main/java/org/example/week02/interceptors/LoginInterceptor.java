@@ -25,6 +25,12 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //request是不是option请求,是的话直接放行
+        if(request.getMethod().equals("OPTIONS")){
+            return true;
+        }
+
+
         String token = request.getHeader("Authorization");
         try {
             Map<String, Object> map = JwtUtil.parseToken(token);
