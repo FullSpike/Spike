@@ -12,7 +12,6 @@
             :class="{ active: currentMenu === item.id }"
             @click="currentMenu = item.id"
         >
-          <span class="icon">{{ item.icon }}</span>
           <span class="text">{{ item.name }}</span>
         </div>
       </div>
@@ -143,12 +142,12 @@ export default {
     return {
       currentMenu: 'bind',
       menuList: [
-        { id: 'bind', name: '绑定/修改宿舍', icon: '🏠', desc: '绑定或修改宿舍信息' },
-        { id: 'repair', name: '创建报修单', icon: '🔧', desc: '提交新的报修申请' },
-        { id: 'records', name: '查看报修记录', icon: '📋', desc: '查看历报修记录' },
-        { id: 'cancel', name: '取消报修单', icon: '❌', desc: '取消未处理的报修' },
-        { id: 'password', name: '修改密码', icon: '🔐', desc: '修改登录密码' },
-        { id: 'logout', name: '退出登录', icon: '🚪', desc: '退出当前账号' }
+        { id: 'bind', name: '绑定/修改宿舍', desc: '绑定或修改宿舍信息' },
+        { id: 'repair', name: '创建报修单', desc: '提交新的报修申请' },
+        { id: 'records', name: '查看报修记录', desc: '查看历报修记录' },
+        { id: 'cancel', name: '取消报修单', desc: '取消未处理的报修' },
+        { id: 'password', name: '修改密码', desc: '修改登录密码' },
+        { id: 'logout', name: '退出登录', desc: '退出当前账号' }
       ],
       room: '',
       currentRoom: JSON.parse(localStorage.getItem('user') || '{}').room || '',

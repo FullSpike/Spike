@@ -73,7 +73,7 @@ public class studentServiceImpl implements studentService {
                 s.getRoom(),
                 s.getNumber(),
                 LocalDateTime.now(),
-                path_name);
+                "http://localhost:8081/order/"+Uid+ fileName.substring(fileName.lastIndexOf(".")));
     }
 
 

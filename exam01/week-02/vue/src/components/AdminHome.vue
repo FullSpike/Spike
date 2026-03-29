@@ -12,7 +12,6 @@
               :class="{ active: activeMenu === item.id }"
               @click="activeMenu = item.id"
           >
-            <span class="menu-icon">{{ item.icon }}</span>
             <span class="menu-title">{{ item.title }}</span>
           </div>
         </div>
@@ -71,6 +70,12 @@
                     <button class="btn-update" @click="showUpdateStatus(order)">更新状态</button>
                     <button class="btn-delete" @click="confirmDelete(order)">删除</button>
                   </td>
+                  <!-- 图片展示 -->
+                  <div v-if="order.path_name">
+                    <img :src="order.path_name" alt="报修图片"
+                         style="max-width: 100px; cursor: pointer" @click="showPreview = true,previewimgurl = order.path_name" />
+                  </div>
+
                 </tr>
                 </tbody>
               </table>
@@ -94,6 +99,13 @@
               <el-button @click="statusDialogVisible = false">取消</el-button>
               <el-button type="primary" @click="updateOrderStatus">确认更新</el-button>
             </template>
+          </el-dialog>
+
+          <!-- 图片预览弹窗 -->
+          <el-dialog v-model="showPreview" title="图片预览" width="600px">
+            <div class="image-preview">
+              <img :src="previewimgurl" alt="预览图片" style="width: 100%" />
+            </div>
           </el-dialog>
 
           <!-- 修改密码 -->
@@ -135,9 +147,9 @@ export default {
     return {
       activeMenu: 'viewOrders',
       menuItems: [
-        { id: 'viewOrders', title: '查看报修单', icon: '📋', description: '查看和管理所有报修单' },
-        { id: 'changePassword', title: '修改密码', icon: '🔐', description: '修改管理员密码' },
-        { id: 'logout', title: '退出登录', icon: '🚪', description: '退出当前账号' }
+        { id: 'viewOrders', title: '查看报修单', description: '查看和管理所有报修单' },
+        { id: 'changePassword', title: '修改密码', description: '修改管理员密码' },
+        { id: 'logout', title: '退出登录', description: '退出当前账号' }
       ],
 
       // 报修单数据
@@ -150,7 +162,8 @@ export default {
           status: '',
           evaluation: '',
           last_time: '',
-          update_time: ''
+          update_time: '',
+          path_name: ''
         },
 
 
@@ -160,10 +173,6 @@ export default {
       // 筛选
       filterStatus: '',
       filteredOrders: [],
-
-      // 详情弹窗
-      detailDialogVisible: false,
-      currentOrder: null,
 
       // 更新状态
       statusDialogVisible: false,
@@ -175,24 +184,31 @@ export default {
         oldPassword: '',
         newPassword: '',
         confirmPassword: ''
-      }
+
+      },
+
+      // 图片预览
+      showPreview: false,
+      previewimgurl: ''
     }
   },
   computed: {
+
     currentMenu() {
       return this.menuItems.find(item => item.id === this.activeMenu) || this.menuItems[0]
     }
   },
   mounted() {
+
     request.get('/admins/allorder').then(res =>{
       this.orders = res.data || []
     })
-    /*this.filterOrders()*/
+    this.filterOrders()
   },
   methods: {
     // 筛选订单
     filterOrders() {
-      if (!this.filterStatus) {
+      if (this.filterStatus === '') {
         this.filteredOrders = [...this.orders]
       } else {
         this.filteredOrders = this.orders.filter(order => order.status === this.filterStatus)
@@ -318,6 +334,8 @@ export default {
     handleLogout() {
       ElMessage.success('已退出登录')
       this.$router.push('/login')
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
     }
   }
 }
@@ -363,19 +381,6 @@ export default {
   margin-bottom: 20px;
 }
 
-.avatar {
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
-  margin: 0 auto 12px;
-}
 
 .user-info .name {
   font-weight: bold;
@@ -430,7 +435,7 @@ export default {
   flex: 1 1 auto;
   background: white;
   border-radius: 16px;
-  padding: 60px;
+  padding: 100px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
@@ -649,6 +654,32 @@ export default {
 .password-panel {
   max-width: 400px;
   margin: 0 auto;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
 }
 
 .submit-btn {
@@ -660,6 +691,11 @@ export default {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
 }
 
 /* 退出登录面板 */

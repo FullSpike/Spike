@@ -11,7 +11,7 @@ public class Order {
     private String room;
     private String number;
     private LocalDateTime last_time;
-    private String pathname;
+    private String path_name;
 
     public Integer getId() {
         return id;
@@ -77,12 +77,12 @@ public class Order {
         this.last_time = last_time;
     }
 
-    public String getPathname() {
-        return pathname;
+    public String getPath_name() {
+        return path_name;
     }
 
-    public void setPathname(String pathname) {
-        this.pathname = pathname;
+    public void setPath_name(String path_name) {
+        this.path_name = path_name;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Order {
                 ", room='" + room + '\'' +
                 ", number='" + number + '\'' +
                 ", time='" + last_time + '\'' +
-                ", pathname='" + pathname + '\'' +
+                ", path_name='" + path_name + '\'' +
                 '}';
     }
 }
