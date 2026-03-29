@@ -6,6 +6,11 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    port: 8080,        // 开发服务器端口
+    strictPort: true,  // 端口被占用时直接退出，不尝试下一个端口
+
+  },
   plugins: [
     vue(),
     vueDevTools(),

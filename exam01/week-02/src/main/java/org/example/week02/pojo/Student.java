@@ -1,10 +1,20 @@
 package org.example.week02.pojo;
 
 public class Student {
+
+    private long id;
     private String number;
     private String room;
     private String password;
     private String token;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getNumber() {
         return number;
@@ -41,7 +51,8 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "number='" + number + '\'' +
+                "id=" + id +
+                "='" + number + '\'' +
                 ", room='" + room + '\'' +
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +

@@ -19,6 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
         * 登录拦截器
         * */
         registry.addInterceptor(loginInterceptor)
-                .excludePathPatterns("/students","/admins","/studentlogin","/adminlogin");
+                .excludePathPatterns("/students","/admins","/login");
     }
 }

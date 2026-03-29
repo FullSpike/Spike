@@ -1,10 +1,19 @@
 package org.example.week02.pojo;
 
 public class Admin {
+    private long id;
     private String number;
     private String password;
     private Integer f_id;
     private String token;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Integer getF_id() {
         return f_id;
