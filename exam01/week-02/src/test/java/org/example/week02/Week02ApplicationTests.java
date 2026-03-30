@@ -23,5 +23,13 @@ class Week02ApplicationTests {
 
 
     }
+    @Test
+    void testAp(){
+        ApplicationHome ap=new ApplicationHome(this.getClass());
+        String path_name =ap.getDir().getParentFile().getParentFile()
+                .getAbsolutePath();
+        System.out.println(path_name);
+    }
+    
 
 }

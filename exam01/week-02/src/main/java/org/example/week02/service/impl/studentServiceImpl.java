@@ -6,6 +6,7 @@ import org.example.week02.pojo.Order;
 import org.example.week02.pojo.Student;
 import org.example.week02.service.studentService;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,7 @@ public class studentServiceImpl implements studentService {
                 LocalDateTime.now(),
                 "http://localhost:8081/order/"+Uid+ fileName.substring(fileName.lastIndexOf(".")));
     }
+
 
 
 

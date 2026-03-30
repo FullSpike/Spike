@@ -374,24 +374,8 @@ export default {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar-header {
-  text-align: center;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #f0f0f0;
-  margin-bottom: 20px;
-}
 
 
-.user-info .name {
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.user-info .role {
-  font-size: 13px;
-  color: #999;
-}
 
 .menu-list {
   display: flex;
@@ -420,10 +404,6 @@ export default {
   color: white;
 }
 
-.menu-icon {
-  font-size: 20px;
-  width: 28px;
-}
 
 .menu-title {
   font-size: 15px;
@@ -579,44 +559,13 @@ export default {
   color: #f56c6c;
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.status-badge.pending {
-  background: #fff3e0;
-  color: #e6a23c;
-}
-
-.status-badge.completed {
-  background: #e8f5e9;
-  color: #67c23a;
-}
 
 /* 详情弹窗 */
-.order-detail {
-  padding: 10px;
-}
-
-.detail-row {
-  display: flex;
-  margin-bottom: 15px;
-}
 
 .detail-row label {
   width: 100px;
   font-weight: 500;
   color: #333;
-}
-
-.detail-content {
-  flex: 1;
-  color: #666;
-  line-height: 1.5;
 }
 
 /* 表单样式 */

@@ -156,9 +156,7 @@ export default {
       pwdData: { new: '', confirm: '' },
       recordList: [
         { id: '', evaluation: '', detail: '', status: '', last_time: '',path_name:''}
-      ],
-      //图片上传预览
-      previewUrl: ''
+      ]
     }
   },
 
@@ -253,8 +251,11 @@ export default {
         })
         if (response.code === '200') {
           ElMessage.success('报修成功！')
-          // 刷新列表(有bug，出现保修成功和网络异常)
-          this.$refs.repairForm.resetFields()
+          // 刷新列表(有点繁琐，重新发出请求)
+          let user=JSON.parse(localStorage.getItem('user') || '{}')
+          request.get('/students/'+user.id+'/order').then((res) => {
+            this.recordList = res.data || []
+          })
         } else {
           ElMessage.error(response.msg || '报修失败')
         }
