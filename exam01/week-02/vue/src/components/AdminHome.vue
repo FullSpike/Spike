@@ -260,8 +260,6 @@ export default {
         } catch (e) {
           ElMessage.error('网络错误，请稍后重试')
         }
-
-        ElMessage.success('状态更新成功')
         this.statusDialogVisible = false
         this.filterOrders()
       }

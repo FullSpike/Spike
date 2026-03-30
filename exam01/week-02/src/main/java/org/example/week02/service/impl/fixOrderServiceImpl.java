@@ -7,6 +7,7 @@ import org.example.week02.service.fixOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -48,6 +49,6 @@ public class fixOrderServiceImpl implements fixOrderService {
         if(fom.selectOrderById(oId)==null) {
             throw new serviceException("订单不存在","404");
         }
-        fom.updateOrder(oId,status);
+        fom.updateOrder(oId,status, LocalDateTime.now());
     }
 }

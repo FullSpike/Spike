@@ -4,6 +4,7 @@ package org.example.week02.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.example.week02.pojo.Order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface fixOrderMapper {
@@ -22,7 +23,8 @@ public interface fixOrderMapper {
 
     List<Order> selectUnProcessOrder();
 
-    void updateOrder(@Param("id") long id,@Param("status") String status);
+    void updateOrder(@Param("id") long id,@Param("status") String status,
+                     @Param("last_time") LocalDateTime last_time);
 }
 
 
