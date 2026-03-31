@@ -1,10 +1,4 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import Login from './components/Login.vue'
-import Register from './components/test.vue'
-import Test from "@/components/test.vue";
-import WelcomeItem from "@/components/WelcomeItem.vue";
 </script>
 
 <template>

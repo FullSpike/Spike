@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Test from "@/components/test.vue";
 import StudentHome from "@/components/StudentHome.vue";
 import AdminHome from "@/components/AdminHome.vue";
+import Register from "@/components/Register.vue";
+
 
 // 定义路由
 const routes = [
@@ -26,6 +28,12 @@ const routes = [
         name: 'AdminHome',
         component: AdminHome,
         meta: {requiresAuth: true}
+    },
+    {
+        path: '/Register',
+        name: 'Register',
+        component: Register,
+        meta: {requiresAuth: false}
     }
 ]
 

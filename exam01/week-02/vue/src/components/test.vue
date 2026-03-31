@@ -10,6 +10,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleLogin">登录</el-button>
+        <el-button type="info" @click="$router.push('/Register')">注册</el-button>
       </el-form-item>
     </el-form>
     <p>默认测试账号：3125000000 / AB123456</p>
