@@ -598,9 +598,11 @@ export default {
 
 /* 修改密码面板 */
 .password-panel {
-  max-width: 400px;
+  white-space: nowrap;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
+
 }
 
 .form-group {
